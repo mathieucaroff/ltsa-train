@@ -3,25 +3,23 @@ package train;
 /**
  * Représentation d'un train. Un train est caractérisé par deux valeurs :
  * <ol>
- *   <li>
- *     Son nom pour l'affichage.
- *   </li>
- *   <li>
- *     La position qu'il occupe dans le circuit (un élément avec une direction) : classe {@link Position}.
- *   </li>
+ * <li>Son nom pour l'affichage.</li>
+ * <li>La position qu'il occupe dans le circuit (un élément avec une direction)
+ * : classe {@link Position}.</li>
  * </ol>
  * 
  * @author Fabien Dagnat <fabien.dagnat@imt-atlantique.fr>
- * @author Mayte segarra <mt.segarra@imt-atlantique.fr>
- * Test if the first element of a train is a station
+ * @author Mayte segarra <mt.segarra@imt-atlantique.fr> Test if the first
+ *         element of a train is a station
  * @author Philippe Tanguy <philippe.tanguy@imt-atlantique.fr>
  * @version 0.3
  */
 public class Train {
 	private final String name;
-	private final Position pos;
+	private final Railway railway;
+	private Position pos;
 
-	public Train(String name, Position p) throws BadPositionForTrainException {
+	public Train(String name, Railway rail, Position p) throws BadPositionForTrainException {
 		if (name == null || p == null)
 			throw new NullPointerException();
 
@@ -30,6 +28,7 @@ public class Train {
 			throw new BadPositionForTrainException(name);
 
 		this.name = name;
+		this.railway = rail;
 		this.pos = p.clone();
 	}
 
@@ -41,5 +40,10 @@ public class Train {
 		result.append(" is on ");
 		result.append(this.pos);
 		return result.toString();
+	}
+
+	public void move() {
+		pos = railway.getNextPosition(pos);
+		System.out.println(toString());
 	}
 }
