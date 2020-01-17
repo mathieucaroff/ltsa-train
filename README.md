@@ -84,7 +84,7 @@ Train[2] is on AB going from right to left
 
 ### Q2.2
 
-On rajoute une nouvelle variable count dans `Element` qui permet de savoir combien de
+On rajoute une nouvelle variable `count` dans `Element` qui permet de savoir combien de
 trains sont présent dans l'élément. On généralise `size` à `Element`, une section ayant
 une taille de 1.
 Les variables utilisées pour exprimer l'invariant de sûreté sont : `count` et `size` dans `Element`.
@@ -128,3 +128,28 @@ no room left in the next position: Train[2] is on GareD going from right to left
 
 Il est donc nécessaire d'améliorer l'invariant de sûreté.
 
+### Q3.1
+
+On ajoute une varialbe `direction` à Railway qui indique la direction
+d'utilisation du rail entres les gares. Cette variable vaut `null` lorsque
+qu'aucun train ne parcours le rail.
+On ajoute une variable `count` à Railway qui indique le nombre de trains
+hors d'une gare.
+
+### Q3.2
+
+La condition de suretée est:
+
+Pour tout les trains présents sur le rail, la direction du train doit être
+égale à celle du rail.
+
+La variable `count` devra être tenue à jour.
+
+### Q3.3
+
+La classe réponsable de cette variable critique est Railway.
+
+### Q3.4
+
+L'action critiques suceptible de modifier la variable est l'action `move`
+dans la classe `Train`.
