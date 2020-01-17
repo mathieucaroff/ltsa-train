@@ -47,8 +47,8 @@ public abstract class Element {
 	/**
 	 * this method should only be used at the initialization of the railway
 	 */
-	public synchronized void setCount() {
-		this.count += 1;
+	public synchronized void setCount(int count) {
+		this.count = count;
 	}
 
 	public synchronized void incrementCount() {
@@ -56,7 +56,7 @@ public abstract class Element {
 	}
 
 	public synchronized void decrementCount() {
-		this.count += 1;
+		this.count -= 1;
 	}
 
 	public int getSize() {
