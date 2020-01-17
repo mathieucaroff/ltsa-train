@@ -9,7 +9,6 @@ package train;
  * @author Philippe Tanguy <philippe.tanguy@imt-atlantique.fr>
  */
 public class Station extends Element {
-	private final int size;
 
 	public Station(String name, int size) {
 		super(name);

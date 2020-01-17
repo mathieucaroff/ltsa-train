@@ -21,10 +21,12 @@ public class Main {
 			System.out.println(t1);
 			System.out.println(t2);
 			System.out.println(t3);
-
-			for (int k = 0; k < 20; k++) {
-				t1.move();
-			}
+			Thread t01 = new Thread(t1);
+			Thread t02 = new Thread(t2);
+			Thread t03 = new Thread(t3);
+			t01.start();
+			t02.start();
+			t03.start();
 		} catch (BadPositionForTrainException e) {
 			System.out.println("Le train " + e.getMessage());
 		}

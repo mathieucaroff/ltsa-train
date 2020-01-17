@@ -18,6 +18,8 @@ package train;
 public abstract class Element {
 	private final String name;
 	protected Railway railway;
+	protected int size;
+	protected int count;
 
 	protected Element(String name) {
 		if (name == null)
@@ -36,6 +38,29 @@ public abstract class Element {
 	@Override
 	public String toString() {
 		return this.name;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	/**
+	 * this method should only be used at the initialization of the railway
+	 */
+	public synchronized void setCount() {
+		this.count += 1;
+	}
+
+	public synchronized void incrementCount() {
+		this.count += 1;
+	}
+
+	public synchronized void decrementCount() {
+		this.count += 1;
+	}
+
+	public int getSize() {
+		return size;
 	}
 
 	public abstract boolean isStation();

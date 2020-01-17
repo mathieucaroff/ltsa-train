@@ -10,6 +10,7 @@ package train;
 public class Section extends Element {
 	public Section(String name) {
 		super(name);
+		this.size = 1;
 	}
 
 	public boolean isStation() {

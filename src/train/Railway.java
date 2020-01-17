@@ -20,7 +20,7 @@ public class Railway {
 	}
 
 	public Position getNextPosition(Position current) {
-		Element currentElem = current.getPos();
+		Element currentElem = current.getElem();
 		Direction currentDirection = current.getDirection();
 		int currentIndex = -1;
 		for (int k = 0; k < elements.length; k++) {

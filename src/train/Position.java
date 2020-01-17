@@ -38,7 +38,7 @@ public class Position implements Cloneable {
 		}
 	}
 
-	public Element getPos() {
+	public Element getElem() {
 		return element;
 	}
 

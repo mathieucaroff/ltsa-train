@@ -62,7 +62,46 @@ Train[1] is on CD going from left to right
 
 ### Q2.1
 
-(Une manière de modéliser la situation est de faire des Trains des acteurs,
-et de leur associer une Thread à chacun.)
+Une manière de modéliser la situation est de faire des Trains des acteurs,
+et de leur associer une Thread à chacun.
 
-(On ajoute `implements Runnable` et `public void run()` à la classe `Train`.)
+On ajoute `implements Runnable` et `public void run()` à la classe `Train`.
+
+On ajoute les instances de Thread au `Main`.
+
+```
+Train[1] is on AB going from right to left
+Train[2] is on BC going from right to left
+Train[3] is on GareA going from left to right
+Train[1] is on GareA going from right to left
+Train[3] is on AB going from left to right
+Train[2] is on AB going from right to left
+```
+
+### Q2.2
+
+On rajoute une nouvelle variable count dans `Element` qui permet de savoir combien de
+trains sont présent dans l'élément. On généralise `size` à `Element`, une section ayant
+une taille de 1.
+Les variables utilisées pour exprimer l'invariant de sûreté sont : `count` et `size` dans `Element`.
+
+### Q2.3
+
+L'invariant de sûreté peut donc s'exprimer ainsi :
+
+```
+for element in allElement
+    if element.getCount() > element.getSize()
+        return false
+return true
+
+```
+
+### Q2.4
+
+Le déplacement d'un train (méthode `move`) est une action critique,
+c'est la seule dans la version actuelle du projet.
+
+### Q2.5
+
+

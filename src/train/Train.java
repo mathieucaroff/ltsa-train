@@ -14,7 +14,7 @@ package train;
  * @author Philippe Tanguy <philippe.tanguy@imt-atlantique.fr>
  * @version 0.3
  */
-public class Train {
+public class Train implements Runnable {
 	private final String name;
 	private final Railway railway;
 	private Position pos;
@@ -24,7 +24,7 @@ public class Train {
 			throw new NullPointerException();
 
 		// A train should be first be in a station
-		if (!(p.getPos() instanceof Station))
+		if (!(p.getElem() instanceof Station))
 			throw new BadPositionForTrainException(name);
 
 		this.name = name;
@@ -43,7 +43,27 @@ public class Train {
 	}
 
 	public void move() {
-		pos = railway.getNextPosition(pos);
+		this.getPos().getElem().decrementCount();
+		pos = railway.getNextPosition(this.pos);
+		this.getPos().getElem().incrementCount();
 		System.out.println(toString());
+	}
+
+	public Position getPos() {
+		return pos;
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			this.move();
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 	}
 }
