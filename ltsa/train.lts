@@ -1,0 +1,42 @@
+// SECTION = EMPTY,
+// EMPTY = (enter -> FULL),
+// FULL = (exit -> EMPTY).
+
+ARC(N=2) = EMPTY,
+EMPTY = (
+  load_lr -> LR[1] |
+  load_rl -> RL[1]
+),
+LR[m:1..N] = (
+  when (m < N) load_lr -> LR[m+1] |
+  when (m > 1) unload_lr -> LR[m-1] |
+  when (m == 1) unload_lr -> EMPTY
+),
+RL[m:1..N] = (
+  when (m < N) load_rl -> RL[m+1] |
+  when (m > 1) unload_rl -> RL[m-1] |
+  when (m == 1) unload_rl -> EMPTY
+).
+
+STATION(P=2, S=0) = LOAD[S],
+LOAD[q:0..P] = (
+    when (q < P) enter -> LOAD[q+1] |
+    when (q > 0) exit -> LOAD[q-1]
+).
+
+|| NETWORK = (
+    sa:STATION(3, 1) ||
+    xab:ARC(3) ||
+    sb:STATION(2, 1) ||
+    xbc:ARC(2) ||
+    sc::STATION(3, 1)
+) / {
+    xab.load_lr / sa.exit,
+    xab.load_rl / sb.exit,
+    xab.unload_lr / sb.enter,
+    xab.unload_rl / sa.enter,
+    xbc.load_lr / sb.exit,
+    xbc.load_rl / sc.exit,
+    xbc.unload_lr / sc.enter,
+    xbc.unload_rl / sb.enter
+}.
