@@ -30,6 +30,7 @@ public class Train implements Runnable {
 		this.name = name;
 		this.railway = rail;
 		this.pos = p.clone();
+		this.pos.getElem().incrementCount();
 	}
 
 	@Override
@@ -42,11 +43,28 @@ public class Train implements Runnable {
 		return result.toString();
 	}
 
-	public void move() {
-		this.getPos().getElem().decrementCount();
-		pos = railway.getNextPosition(this.pos);
-		this.getPos().getElem().incrementCount();
-		System.out.println(toString());
+	public synchronized void move() {
+		Position currentPos = this.getPos();
+		Position nextPos = railway.getNextPosition(this.pos);
+		Position posA = currentPos;
+		Position posB = nextPos;
+		if (currentPos.getDirection() == Direction.RL) {
+			posA = nextPos;
+			posB = currentPos;
+		}
+		// placer les verrous
+		synchronized (posA.getElem()) {
+			synchronized (posB.getElem()) {
+				if (nextPos.getElem().hasRoom()) {
+					nextPos.getElem().incrementCount();
+					currentPos.getElem().decrementCount();
+					this.pos = nextPos;
+					System.out.println(toString());
+				} else {
+					System.out.println("no room left in the next position: " + toString());
+				}
+			}
+		}
 	}
 
 	public Position getPos() {
@@ -55,7 +73,7 @@ public class Train implements Runnable {
 
 	@Override
 	public void run() {
-		while (true) {
+		for (int i = 0; i < 30; i++) {
 			this.move();
 			try {
 				Thread.sleep(1);

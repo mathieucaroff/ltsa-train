@@ -52,15 +52,35 @@ public abstract class Element {
 	}
 
 	public synchronized void incrementCount() {
+		while (!hasRoom()) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		this.count += 1;
+		notifyAll();
 	}
 
 	public synchronized void decrementCount() {
+		if (getCount() == 0) {
+			throw new RuntimeException();
+		}
 		this.count -= 1;
 	}
 
 	public int getSize() {
 		return size;
+	}
+
+	public synchronized boolean hasRoom() {
+		if (getCount() < getSize()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public abstract boolean isStation();

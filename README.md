@@ -1,5 +1,9 @@
 # Trains et circuits
 
+## TODO
+
+supprimer isStation (+ wait dans Element) (si nécessaire)
+
 Projet d'exercice de l'unité éducative programmation concurrente à
 IMT Atlantique.
 
@@ -104,4 +108,23 @@ c'est la seule dans la version actuelle du projet.
 
 ### Q2.5
 
+Cette méthode doit être ajoutée dans la classe `Train`.
+
+### Q2.6
+
+Il faut ajouter les méthodes `incrementCount()`, `decrementCount()` et `hasRoom()`
+dans la classe `Element`.
+
+### Q2.8
+
+Lors de la simulation avec 3 trains nous avons pu mettre en évidence
+un cas d'interblocage des trains, en voici la trace :
+
+```
+no room left in the next position: Train[1] is on CD going from right to left
+no room left in the next position: Train[3] is on BC going from left to right
+no room left in the next position: Train[2] is on GareD going from right to left
+```
+
+Il est donc nécessaire d'améliorer l'invariant de sûreté.
 
