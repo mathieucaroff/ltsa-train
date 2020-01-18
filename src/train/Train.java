@@ -33,6 +33,10 @@ public class Train implements Runnable {
 		this.pos.getElem().incrementCount();
 	}
 
+	private void setPos(Position pos) {
+		this.pos = pos;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder("Train[");
@@ -43,9 +47,51 @@ public class Train implements Runnable {
 		return result.toString();
 	}
 
-	public synchronized void move() {
-		Position currentPos = this.getPos();
-		Position nextPos = railway.getNextPosition(this.pos);
+	/**
+	 * Try to move to the next position
+	 * 
+	 * @return true iff the train did move
+	 */
+	public synchronized boolean move() {
+		Position currentPos = getPos();
+		Position nextPos = railway.getNextPosition(currentPos);
+
+		Direction myDirection = nextPos.getDirection();
+
+		boolean leavingStation = currentPos.getElem().isStation() && !nextPos.getElem().isStation();
+		boolean reachingStation = !currentPos.getElem().isStation() && nextPos.getElem().isStation();
+		boolean sync = leavingStation || reachingStation;
+
+		if (sync) {
+			synchronized (this.railway) {
+				if (leavingStation) {
+					while (!railway.validateDirection(myDirection)) {
+						try {
+							railway.wait();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					railway.setDirection(myDirection);
+				}
+				boolean success = changePosition(currentPos, nextPos);
+				if (success) {
+					if (leavingStation) {
+						railway.incrementCount();
+					} else {
+						railway.decrementCount();
+					}
+				}
+				railway.notifyAll();
+				return success;
+			}
+		} else {
+			return changePosition(currentPos, nextPos);
+		}
+	}
+
+	private boolean changePosition(Position currentPos, Position nextPos) {
 		Position posA = currentPos;
 		Position posB = nextPos;
 		if (currentPos.getDirection() == Direction.RL) {
@@ -56,12 +102,14 @@ public class Train implements Runnable {
 		synchronized (posA.getElem()) {
 			synchronized (posB.getElem()) {
 				if (nextPos.getElem().hasRoom()) {
-					nextPos.getElem().incrementCount();
 					currentPos.getElem().decrementCount();
-					this.pos = nextPos;
+					nextPos.getElem().incrementCount();
+					setPos(nextPos);
 					System.out.println(toString());
+					return true;
 				} else {
 					System.out.println("no room left in the next position: " + toString());
+					return false;
 				}
 			}
 		}
@@ -73,7 +121,7 @@ public class Train implements Runnable {
 
 	@Override
 	public void run() {
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 300; i++) {
 			this.move();
 			try {
 				Thread.sleep(1);
@@ -82,6 +130,6 @@ public class Train implements Runnable {
 				e.printStackTrace();
 			}
 		}
-
+		System.out.println("DONE (" + toString() + ")");
 	}
 }

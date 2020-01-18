@@ -66,7 +66,7 @@ public abstract class Element {
 
 	public synchronized void decrementCount() {
 		if (getCount() == 0) {
-			throw new RuntimeException();
+			throw new RuntimeException("cannot decrement count already reached 0");
 		}
 		this.count -= 1;
 	}

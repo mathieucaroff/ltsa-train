@@ -98,7 +98,6 @@ for element in allElement
     if element.getCount() > element.getSize()
         return false
 return true
-
 ```
 
 ### Q2.4
@@ -136,18 +135,31 @@ qu'aucun train ne parcours le rail.
 On ajoute une variable `count` à Railway qui indique le nombre de trains
 hors d'une gare.
 
+La variable permettant d'exprimer la condition est `direction` dans `Railway`.
+
 ### Q3.2
 
-La condition de suretée est:
+La condition de suretée est :
 
 Pour tout les trains présents sur le rail, la direction du train doit être
 égale à celle du rail.
 
-La variable `count` devra être tenue à jour.
+Formellement la condition est :
+
+```
+for train in allTrain:
+    if train.getPos().getElement().isStation() == false:
+        if train.getPos().getDirection() != railway.direction:
+            return false
+return true
+```
+
+La variable `count` devra aussi être tenue à jour.
 
 ### Q3.3
 
-La classe réponsable de cette variable critique est Railway.
+La classe réponsable de cette variable critique est Railway. De même pour la
+variable `count`.
 
 ### Q3.4
 
