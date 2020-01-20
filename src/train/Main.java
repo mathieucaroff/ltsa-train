@@ -35,7 +35,7 @@ public class Main {
 		System.out.println("\n" + r + "\n");
 		Position p = new Position(A, Direction.LR);
 		try {
-			for (int k = 1; k <= 3; k++) {
+			for (int k = 1; k <= 4; k++) {
 				Train tt = new Train("" + k, p);
 				System.out.println(tt);
 				Thread tth = new Thread(tt);

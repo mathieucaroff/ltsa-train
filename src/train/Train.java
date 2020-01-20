@@ -63,7 +63,6 @@ public class Train implements Runnable {
 			return changePosition(currentPos, nextPos, reachingStation);
 		} else if (reachingStation) {
 			Arc arc = currentPos.getElem().getArc().get();
-
 			synchronized (arc) {
 				boolean success = changePosition(currentPos, nextPos, reachingStation);
 				if (success) {
@@ -81,11 +80,10 @@ public class Train implements Runnable {
 			if (!stationElement.isStation()) {
 				throw new RuntimeException();
 			}
-
-			synchronized (stationElement) {
-				if (stationElement.hasRoom()) {
-					synchronized (arc) {
-						if (arc.validateDirection(myDirection)) {
+			synchronized (arc) {
+				if (arc.validateDirection(myDirection)) {
+					synchronized (stationElement) {
+						if (stationElement.hasRoom()) {
 							boolean success = changePosition(currentPos, nextPos, reachingStation);
 							if (success) {
 								arc.setDirection(myDirection);
@@ -94,12 +92,12 @@ public class Train implements Runnable {
 							}
 							return success;
 						} else {
-							System.out.println("Stopped (direction): " + toString());
+							System.out.println("Stopped (station room): " + toString());
 							return false;
 						}
 					}
 				} else {
-					System.out.println("Stopped (station room): " + toString());
+					System.out.println("Stopped (direction): " + toString());
 					return false;
 				}
 			}
@@ -152,7 +150,7 @@ public class Train implements Runnable {
 
 	@Override
 	public void run() {
-		for (int i = 0; i < 300; i++) {
+		for (int i = 0; i < 3000; i++) {
 			this.move();
 			try {
 				Thread.sleep(1);
