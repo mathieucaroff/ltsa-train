@@ -1,5 +1,7 @@
 package train;
 
+import java.util.Optional;
+
 /**
  * Représentation d'une gare. C'est une sous-classe de la classe
  * {@link Element}. Une gare est caractérisée par un nom et un nombre de quais
@@ -19,5 +21,9 @@ public class Station extends Element {
 
 	public boolean isStation() {
 		return true;
+	}
+
+	public Optional<Arc> getArc() {
+		return Optional.empty();
 	}
 }

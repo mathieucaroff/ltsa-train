@@ -5,8 +5,15 @@ package train;
  */
 public class Main {
 
-	private static void linkElementArray() {
-
+	private static void linkElementArray(Element[] elementArray) {
+		for (int i = 0; i < elementArray.length - 1; i++) {
+			elementArray[i].setNextElement(elementArray[i + 1]);
+			elementArray[i + 1].setPreviousElement(elementArray[i]);
+		}
+		Element beginning = elementArray[0];
+		beginning.setPreviousElement(beginning);
+		Element end = elementArray[elementArray.length - 1];
+		end.setNextElement(end);
 	}
 
 	public static void main(String[] args) {
@@ -16,27 +23,24 @@ public class Main {
 		Section AB = new Section("AB");
 		Section BC = new Section("BC");
 		Section CD = new Section("CD");
-		Railway r = new Railway(new Element[] { A, AB, BC, C, CD, D });
+		Arc abcArc = new Arc("ABC", new Section[] { AB, BC });
+		Arc CdArc = new Arc("CD", new Section[] { CD });
+		Station stationArray[] = { A, C, D };
+		Arc arcArray[] = { abcArc, CdArc };
+
+		linkElementArray(new Element[] { A, AB, BC, C, CD, D });
+
+		Railway r = new Railway(stationArray, arcArray);
 		System.out.println("The railway is:");
-		System.out.println("\t" + r);
+		System.out.println("\n" + r + "\n");
 		Position p = new Position(A, Direction.LR);
 		try {
-			Train t1 = new Train("1", r, p);
-			Train t2 = new Train("2", r, p);
-			Train t3 = new Train("3", r, p);
-			// Train t4 = new Train("4", r, p);
-			System.out.println(t1);
-			System.out.println(t2);
-			System.out.println(t3);
-			// System.out.println(t4);
-			Thread t01 = new Thread(t1);
-			Thread t02 = new Thread(t2);
-			Thread t03 = new Thread(t3);
-			// Thread t04 = new Thread(t4);
-			t01.start();
-			t02.start();
-			t03.start();
-			// t04.start();
+			for (int k = 1; k <= 3; k++) {
+				Train tt = new Train("" + k, p);
+				System.out.println(tt);
+				Thread tth = new Thread(tt);
+				tth.start();
+			}
 		} catch (BadPositionForTrainException e) {
 			System.out.println("Le train " + e.getMessage());
 		}

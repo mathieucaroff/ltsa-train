@@ -1,5 +1,7 @@
 package train;
 
+import java.util.Optional;
+
 /**
  * Cette classe abstraite est la représentation générique d'un élément de base
  * d'un circuit, elle factorise les fonctionnalitÃ©s communes des deux
@@ -19,12 +21,30 @@ public abstract class Element {
 	private final String name;
 	protected int size;
 	protected int count;
+	protected Element nextElement;
+	protected Element previousElement;
 
 	protected Element(String name) {
 		if (name == null)
 			throw new NullPointerException();
 
 		this.name = name;
+	}
+
+	public Element getNextElement() {
+		return nextElement;
+	}
+
+	public void setNextElement(Element nextElement) {
+		this.nextElement = nextElement;
+	}
+
+	public Element getPreviousElement() {
+		return previousElement;
+	}
+
+	public void setPreviousElement(Element previousElement) {
+		this.previousElement = previousElement;
 	}
 
 	@Override
@@ -43,7 +63,7 @@ public abstract class Element {
 		this.count = count;
 	}
 
-	public synchronized void incrementCount() {
+	public synchronized void enter() {
 		while (!hasRoom()) {
 			try {
 				wait();
@@ -56,7 +76,7 @@ public abstract class Element {
 		notifyAll();
 	}
 
-	public synchronized void decrementCount() {
+	public synchronized void leave() {
 		if (getCount() == 0) {
 			throw new RuntimeException("cannot decrement count already reached 0");
 		}
@@ -76,4 +96,6 @@ public abstract class Element {
 	}
 
 	public abstract boolean isStation();
+
+	public abstract Optional<Arc> getArc();
 }

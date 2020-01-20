@@ -16,21 +16,19 @@ package train;
  */
 public class Train implements Runnable {
 	private final String name;
-	private final Railway railway;
 	private Position pos;
 
-	public Train(String name, Railway rail, Position p) throws BadPositionForTrainException {
-		if (name == null || p == null)
+	public Train(String name, Position pos) throws BadPositionForTrainException {
+		if (name == null || pos == null)
 			throw new NullPointerException();
 
 		// A train should be first be in a station
-		if (!(p.getElem() instanceof Station))
+		if (!(pos.getElem() instanceof Station))
 			throw new BadPositionForTrainException(name);
 
 		this.name = name;
-		this.railway = rail;
-		this.pos = p.clone();
-		this.pos.getElem().incrementCount();
+		this.pos = pos;
+		this.pos.getElem().enter();
 	}
 
 	private void setPos(Position pos) {
@@ -54,52 +52,73 @@ public class Train implements Runnable {
 	 */
 	public synchronized boolean move() {
 		Position currentPos = getPos();
-		if (currentPos.getElem().toString() == "GareC" && currentPos.getDirection() == Direction.LR) {
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		Position nextPos = railway.getNextPosition(currentPos);
+		Position nextPos = this.computeNextPosition();
 
 		Direction myDirection = nextPos.getDirection();
 
 		boolean leavingStation = currentPos.getElem().isStation() && !nextPos.getElem().isStation();
 		boolean reachingStation = !currentPos.getElem().isStation() && nextPos.getElem().isStation();
-		boolean sync = leavingStation || reachingStation;
 
-		if (sync) {
-			synchronized (this.railway) {
-				if (leavingStation) {
-					while (!railway.validateDirection(myDirection)) {
-						try {
-							railway.wait();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-					railway.setDirection(myDirection);
-				}
-				boolean success = changePosition(currentPos, nextPos);
+		if (!reachingStation && !leavingStation) {
+			return changePosition(currentPos, nextPos, reachingStation);
+		} else if (reachingStation) {
+			Arc arc = currentPos.getElem().getArc().get();
+
+			synchronized (arc) {
+				boolean success = changePosition(currentPos, nextPos, reachingStation);
 				if (success) {
-					if (leavingStation) {
-						railway.incrementCount();
-					} else {
-						railway.decrementCount();
-					}
+					arc.leave();
 				}
-				railway.notifyAll();
 				return success;
 			}
-		} else {
-			return changePosition(currentPos, nextPos);
+		} else { // leavingStation == true
+			Arc arc = nextPos.getElem().getArc().get();
+
+			Section section = arc.getOtherStation(nextPos.getElem());
+			Element stationElement = nextPos.getDirection() == Direction.LR ? section.getNextElement()
+					: section.getPreviousElement();
+
+			if (!stationElement.isStation()) {
+				throw new RuntimeException();
+			}
+
+			synchronized (stationElement) {
+				if (stationElement.hasRoom()) {
+					synchronized (arc) {
+						if (arc.validateDirection(myDirection)) {
+							boolean success = changePosition(currentPos, nextPos, reachingStation);
+							if (success) {
+								arc.setDirection(myDirection);
+								arc.enter();
+								stationElement.enter();
+							}
+							return success;
+						} else {
+							System.out.println("Stopped (direction): " + toString());
+							return false;
+						}
+					}
+				} else {
+					System.out.println("Stopped (station room): " + toString());
+					return false;
+				}
+			}
 		}
 	}
 
-	private boolean changePosition(Position currentPos, Position nextPos) {
+	private Position computeNextPosition() {
+		Element currentElement = getPos().getElem();
+		Direction direction = getPos().getDirection();
+		Element nextElement = (direction == Direction.LR) ? currentElement.getNextElement()
+				: currentElement.getPreviousElement();
+		if (nextElement == currentElement) {
+			return new Position(nextElement, direction.opposite());
+		} else {
+			return new Position(nextElement, direction);
+		}
+	}
+
+	private boolean changePosition(Position currentPos, Position nextPos, boolean reachingStation) {
 		Position posA = currentPos;
 		Position posB = nextPos;
 		if (currentPos.getDirection() == Direction.RL) {
@@ -109,14 +128,18 @@ public class Train implements Runnable {
 		// placer les verrous
 		synchronized (posA.getElem()) {
 			synchronized (posB.getElem()) {
-				if (nextPos.getElem().hasRoom()) {
-					currentPos.getElem().decrementCount();
-					nextPos.getElem().incrementCount();
+				if (reachingStation || nextPos.getElem().hasRoom()) {
+					currentPos.getElem().leave();
+					if (reachingStation) {
+						// enter has been done previously
+					} else {
+						nextPos.getElem().enter();
+					}
 					setPos(nextPos);
 					System.out.println(toString());
 					return true;
 				} else {
-					System.out.println("no room left in the next position: " + toString());
+					System.out.println("Stopped (room): " + toString());
 					return false;
 				}
 			}
@@ -139,5 +162,6 @@ public class Train implements Runnable {
 			}
 		}
 		System.out.println("DONE (" + toString() + ")");
+		System.exit(0);
 	}
 }

@@ -8,16 +8,27 @@ package train;
  * @author Philippe Tanguy <philippe.tanguy@imt-atlantique.fr>
  */
 public enum Direction {
-	LR {
-		@Override
-		public String toString() {
-			return "from left to right";
+	LR("from left to right") {
+		public Direction opposite() {
+			return Direction.RL;
 		}
 	},
-	RL {
-		@Override
-		public String toString() {
-			return "from right to left";
+	RL("from right to left") {
+		public Direction opposite() {
+			return Direction.LR;
 		}
 	};
+
+	private String name;
+
+	Direction(String name) {
+		this.name = name;
+	}
+
+	public abstract Direction opposite();
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

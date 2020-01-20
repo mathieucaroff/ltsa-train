@@ -8,50 +8,31 @@ package train;
  * @author Philippe Tanguy <philippe.tanguy@imt-atlantique.fr>
  */
 public class Railway {
-	private final Element[] elements;
+	private final Station[] stationArray;
+	private final Arc[] arcArray;
 
-	public Railway(Element[] elements) {
-
-		if (elements == null)
-			throw new NullPointerException();
-
-		this.elements = elements;
-		// verifier debut et fin pour presence gare
-		// 2 listes ? gares et arcs
-	}
-
-	public Position getNextPosition(Position current) {
-		Element currentElem = current.getElem();
-		Direction currentDirection = current.getDirection();
-		int currentIndex = -1;
-		for (int k = 0; k < elements.length; k++) {
-			if (elements[k] == currentElem) {
-				currentIndex = k;
-			}
-		}
-		if (currentIndex == -1) {
+	public Railway(Station[] stationArray, Arc[] arcArray) {
+		super();
+		if (stationArray.length != arcArray.length + 1) {
 			throw new RuntimeException();
 		}
-		if (currentDirection == Direction.LR) {
-			if (currentIndex < elements.length - 1) {
-				return new Position(elements[currentIndex + 1], currentDirection);
-			} else {
-				return new Position(elements[currentIndex], Direction.RL);
-			}
-		} else {
-			if (currentIndex > 0) {
-				return new Position(elements[currentIndex - 1], currentDirection);
-			} else {
-				return new Position(elements[currentIndex], Direction.LR);
-			}
-		}
+		this.stationArray = stationArray;
+		this.arcArray = arcArray;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
 		boolean first = true;
-		for (Element e : this.elements) {
+		for (Station e : this.stationArray) {
+			if (first)
+				first = false;
+			else
+				result.append("--");
+			result.append(e);
+		}
+		result.append(":\n:");
+		for (Arc e : this.arcArray) {
 			if (first)
 				first = false;
 			else

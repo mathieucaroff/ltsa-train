@@ -170,12 +170,10 @@ dans la classe `Train`.
 
 La classe Railway permet déjà d'ajouter autant de gares que souhaitées.
 
-### Q4.2
-
 Voici la trace d'un interblocage avec trois trains et une gare intermédiaire
 pouvant accueillir deux trains.
-Le train 1 et 3 sont dans la gare intermédiaire C, souhaitant aller en gare D;
-le train 2 est en CD et se déplace vers la gare A.
+Le train 1 et 2 sont dans la gare intermédiaire C, souhaitant aller en gare D;
+le train 3 est en CD et se déplace vers la gare A.
 
 ```
 Train[1] is on GareC going from left to right
@@ -191,7 +189,39 @@ no room left in the next position: Train[3] is on CD going from right to left
 no room left in the next position: Train[3] is on CD going from right to left
 ```
 
+### Q4.2
+
 On ajoute une classe `Arc` responsable des sections entre deux gares et de la direction
 entre deux gares, ainsi que tenant compte du nombre de trains circulant sur ces sections.
 
+Une fois cette modification faite, le problème persiste comme attendu.
 
+Avec trois trains et une gare intermédiare C ne pouvant en acceuillir que 2, le
+train 1 ne peut pas rentrer en gare C lorsque les deux autres trains souhaitent
+sortir dans la direction opposée à celle du train A:
+
+```
+Train[2] is on GareC going from right to left
+CD change direction from right to left to direction null
+ABC change direction null to direction from left to right
+Train[1] is on AB going from left to right
+CD change direction null to direction from right to left
+Train[3] is on CD going from right to left
+Train[3] is on GareC going from right to left
+CD change direction from right to left to direction null
+Train[1] is on BC going from left to right
+no room left in the next position: Train[1] is on BC going from left to right
+no room left in the next position: Train[1] is on BC going from left to right
+```
+
+Pour résoudre ce problème d'interblocage, on modifie le rôle de la variable
+`count` pour la gare intermédiaire: elle compte les trains présents et les
+trains en déplacement vers la gare.
+
+On propose alors la condition suivant:
+
+```
+if intermediaryStation.count > intermediaryStation.size:
+    return false
+return true
+```
