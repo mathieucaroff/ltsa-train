@@ -17,7 +17,6 @@ package train;
  */
 public abstract class Element {
 	private final String name;
-	protected Railway railway;
 	protected int size;
 	protected int count;
 
@@ -26,13 +25,6 @@ public abstract class Element {
 			throw new NullPointerException();
 
 		this.name = name;
-	}
-
-	public void setRailway(Railway r) {
-		if (r == null)
-			throw new NullPointerException();
-
-		this.railway = r;
 	}
 
 	@Override

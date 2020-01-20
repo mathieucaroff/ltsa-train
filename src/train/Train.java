@@ -54,6 +54,14 @@ public class Train implements Runnable {
 	 */
 	public synchronized boolean move() {
 		Position currentPos = getPos();
+		if (currentPos.getElem().toString() == "GareC" && currentPos.getDirection() == Direction.LR) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		Position nextPos = railway.getNextPosition(currentPos);
 
 		Direction myDirection = nextPos.getDirection();

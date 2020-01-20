@@ -165,3 +165,33 @@ variable `count`.
 
 L'action critiques suceptible de modifier la variable est l'action `move`
 dans la classe `Train`.
+
+### Q4.1
+
+La classe Railway permet déjà d'ajouter autant de gares que souhaitées.
+
+### Q4.2
+
+Voici la trace d'un interblocage avec trois trains et une gare intermédiaire
+pouvant accueillir deux trains.
+Le train 1 et 3 sont dans la gare intermédiaire C, souhaitant aller en gare D;
+le train 2 est en CD et se déplace vers la gare A.
+
+```
+Train[1] is on GareC going from left to right
+Train[3] is on GareD going from left to right
+Train[2] is on BC going from left to right
+Train[3] is on GareD going from right to left
+Train[2] is on GareC going from left to right
+Direction was : from left to right, setting direction null
+Direction was : null, setting direction from right to left
+Train[3] is on CD going from right to left
+no room left in the next position: Train[3] is on CD going from right to left
+no room left in the next position: Train[3] is on CD going from right to left
+no room left in the next position: Train[3] is on CD going from right to left
+```
+
+On ajoute une classe `Arc` responsable des sections entre deux gares et de la direction
+entre deux gares, ainsi que tenant compte du nombre de trains circulant sur ces sections.
+
+
