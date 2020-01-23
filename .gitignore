@@ -5,3 +5,5 @@
 !/.gitignore
 !/.project
 !/README.md
+
+*.class

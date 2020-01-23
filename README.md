@@ -6,10 +6,57 @@ IMT Atlantique.
 - Mathieu CAROFF
 - Sébastien NAL
 
+- [Trains et circuits](#trains-et-circuits)
+  - [Compilation et exécution](#compilation-et-ex%c3%a9cution)
+  - [Git](#git)
+  - [Exercices](#exercices)
+  - [Ordre des vérrous](#ordre-des-v%c3%a9rrous)
+  - [Exercice 1 - Le comportement d'un train](#exercice-1---le-comportement-dun-train)
+    - [Q1.1](#q11)
+    - [Q1.2](#q12)
+    - [Q1.3](#q13)
+  - [Exercice 2 - Plusieurs trains sur la ligne](#exercice-2---plusieurs-trains-sur-la-ligne)
+    - [Q2.1](#q21)
+    - [Q2.2](#q22)
+    - [Q2.3](#q23)
+    - [Q2.4](#q24)
+    - [Q2.5](#q25)
+    - [Q2.6](#q26)
+    - [Q2.8](#q28)
+  - [Exercice 3 - Éviter les interblocages](#exercice-3---%c3%89viter-les-interblocages)
+    - [Q3.1](#q31)
+    - [Q3.2](#q32)
+    - [Q3.3](#q33)
+    - [Q3.4](#q34)
+  - [Exercice 4 - Gare intermédiaire](#exercice-4---gare-interm%c3%a9diaire)
+    - [Q4.1](#q41)
+    - [Q4.2](#q42)
+    - [Q4.3](#q43)
+
+## Compilation et exécution
+
+Compilez et exécutez le projet avec les commandes suivantes:
+
+```
+cd src
+javac train/Main.java
+java train/Main
+```
+
+## Git
+
+Le projet est public sur Github: https://github.com/mathieucaroff/ltsa-train
+
+## Exercices
+
+À chaque fois que nous avons résolu un exercice, nous avons marqué le
+dernier commit d'un tag. Les commentaires ont été ajouté après la résolution
+du dernier exercice.
+
 ## Ordre des vérrous
 
 Afin d'éviter des situations d'interblocages résultant de la prises multiple de
-vérrous, ce programme suit de manière consitente l'ordre de prise suivant:
+vérrous, ce programme suit de manière consistante l'ordre de prise suivant:
 
 - 1. Les vérrous sur les arcs
 - 2. Les vérrous sur les éléments
@@ -74,6 +121,8 @@ Train[1] is on BC going from left to right
 Train[1] is on CD going from left to right
 ```
 
+## Exercice 2 - Plusieurs trains sur la ligne
+
 ### Q2.1
 
 Une manière de modéliser la situation est de faire des Trains des acteurs,
@@ -137,9 +186,11 @@ no room left in the next position: Train[2] is on GareD going from right to left
 
 Il est donc nécessaire d'améliorer l'invariant de sûreté.
 
+## Exercice 3 - Éviter les interblocages
+
 ### Q3.1
 
-On ajoute une varialbe `direction` à Railway qui indique la direction
+On ajoute une variable `direction` à Railway qui indique la direction
 d'utilisation du rail entres les gares. Cette variable vaut `null` lorsque
 qu'aucun train ne parcours le rail.
 On ajoute une variable `count` à Railway qui indique le nombre de trains
@@ -149,7 +200,7 @@ La variable permettant d'exprimer la condition est `direction` dans `Railway`.
 
 ### Q3.2
 
-La condition de suretée est :
+La condition de sûreté est :
 
 Pour tout les trains présents sur le rail, la direction du train doit être
 égale à celle du rail.
@@ -168,13 +219,15 @@ La variable `count` devra aussi être tenue à jour.
 
 ### Q3.3
 
-La classe réponsable de cette variable critique est Railway. De même pour la
+La classe reponsable de cette variable critique est Railway. De même pour la
 variable `count`.
 
 ### Q3.4
 
-L'action critiques suceptible de modifier la variable est l'action `move`
+L'action critiques susceptible de modifier la variable est l'action `move`
 dans la classe `Train`.
+
+## Exercice 4 - Gare intermédiaire
 
 ### Q4.1
 
@@ -206,7 +259,7 @@ entre deux gares, ainsi que tenant compte du nombre de trains circulant sur ces 
 
 Une fois cette modification faite, le problème persiste comme attendu.
 
-Avec trois trains et une gare intermédiare C ne pouvant en acceuillir que 2, le
+Avec trois trains et une gare intermédiaire C ne pouvant en accueillir que 2, le
 train 1 ne peut pas rentrer en gare C lorsque les deux autres trains souhaitent
 sortir dans la direction opposée à celle du train A:
 
@@ -235,3 +288,7 @@ if intermediaryStation.count > intermediaryStation.size:
     return false
 return true
 ```
+
+### Q4.3
+
+Nous avons ajouté à l'invariant la condition énoncée à la question 4.2.
