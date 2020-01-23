@@ -97,7 +97,22 @@ public class Train implements Runnable {
 			synchronized (arc) {
 				if (arc.validateDirection(myDirection)) {
 					/**
-					 * /!\ the below lock, on stationElement does not respect the lock order
+					 * /!\ the below lock, on `stationElement` does not respect the lock order This
+					 * is not an issue and will never cause a deadlock.
+					 *
+					 * The cycle of locks cannot be closed because the synchronisation of a station
+					 * element can happen in exactly two situations:
+					 * 
+					 * 1. a train is turning over on a station
+					 * 
+					 * -- this only requires one lock, so it cannot participate in a deadlock cycle
+					 * 
+					 * 2. a train is entering or leaving an arc
+					 * 
+					 * -- entering or leaving an arc always requires locking the arc first. This
+					 * way, the train on the entering or leaving the other station on the other end
+					 * of the arc will not be able to lock the arc, and thus, will not be able to
+					 * close the lock cycle.
 					 */
 					synchronized (stationElement) {
 						if (stationElement.hasRoom()) {

@@ -16,6 +16,10 @@ vérrous, ce programme suit de manière consitente l'ordre de prise suivant:
 - S'il est nécessaire de prendre les vérrous sur deux éléments distincts,
   commencer par celui de plus petit indice (le plus "à gauche").
 
+La méthode `move()` de Train contient une exception à la règle d'ordre de prise
+des verrous sur les éléments. Cette exception ne cause pas de problème de
+deadlock, comme le commentaire placé dans le code l'explique.
+
 ## Exercice 1 - Le comportement d'un train
 
 ### Q1.1
