@@ -3,17 +3,22 @@ package train;
 /**
  * Représentation de la direction que peut prendre un train : de gauche à droite
  * ou de droite à gauche.
- * 
+ *
+ * Note: - la direction LR est le sens naturel, le sens à l'allé ("next") - la
+ * direction RL est le sens au retour ("previous")
+ *
  * @author Fabien Dagnat <fabien.dagnat@imt-atlantique.fr>
  * @author Philippe Tanguy <philippe.tanguy@imt-atlantique.fr>
+ * @author Mathieu CAROFF <mathieu.caroff@imt-atlantique.net>
+ * @author Sébastien NAL <sebastien.nal@imt-atlantique.net>
  */
 public enum Direction {
-	LR("from left to right") {
+	LR("right") {
 		public Direction opposite() {
 			return Direction.RL;
 		}
 	},
-	RL("from right to left") {
+	RL("left") {
 		public Direction opposite() {
 			return Direction.LR;
 		}

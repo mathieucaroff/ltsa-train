@@ -1,14 +1,20 @@
 # Trains et circuits
 
-## TODO
-
-supprimer isStation (+ wait dans Element) (si nécessaire)
-
 Projet d'exercice de l'unité éducative programmation concurrente à
 IMT Atlantique.
 
-Mathieu CAROFF
-Sébastien NAL
+- Mathieu CAROFF
+- Sébastien NAL
+
+## Ordre des vérrous
+
+Afin d'éviter des situations d'interblocages résultant de la prises multiple de
+vérrous, ce programme suit de manière consitente l'ordre de prise suivant:
+
+- 1. Les vérrous sur les arcs
+- 2. Les vérrous sur les éléments
+- S'il est nécessaire de prendre les vérrous sur deux éléments distincts,
+  commencer par celui de plus petit indice (le plus "à gauche").
 
 ## Exercice 1 - Le comportement d'un train
 

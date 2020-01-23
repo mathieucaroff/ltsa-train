@@ -9,6 +9,8 @@ import java.util.Optional;
  * 
  * @author Fabien Dagnat <fabien.dagnat@imt-atlantique.fr>
  * @author Philippe Tanguy <philippe.tanguy@imt-atlantique.fr>
+ * @author Mathieu CAROFF <mathieu.caroff@imt-atlantique.net>
+ * @author Sébastien NAL <sebastien.nal@imt-atlantique.net>
  */
 public class Station extends Element {
 

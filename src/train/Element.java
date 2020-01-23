@@ -4,7 +4,7 @@ import java.util.Optional;
 
 /**
  * Cette classe abstraite est la représentation générique d'un élément de base
- * d'un circuit, elle factorise les fonctionnalitÃ©s communes des deux
+ * d'un circuit, elle factorise les fonctionnalités communes des deux
  * sous-classes : l'entrée d'un train, sa sortie et l'appartenance au
  * circuit.<br/>
  * Les deux sous-classes sont :
@@ -13,9 +13,18 @@ import java.util.Optional;
  * <li>La représentation d'une section de voie ferrée : classe
  * {@link Section}</li>
  * </ol>
+ *
+ * Les éléments ont la résponsabilité de connaître et de pouvoir désigner
+ * les éléments adjacents. Il est prévu que les fins de lignes se désignent
+ * elles-même comme élément adjacent.
+ *
+ * Les éléments ont la résponsabilité de connaître le nombre de train les
+ * occupant (count), ainsi que leur capacité maximale (size).
  * 
  * @author Fabien Dagnat <fabien.dagnat@imt-atlantique.fr>
  * @author Philippe Tanguy <philippe.tanguy@imt-atlantique.fr>
+ * @author Mathieu CAROFF <mathieu.caroff@imt-atlantique.net>
+ * @author Sébastien NAL <sebastien.nal@imt-atlantique.net>
  */
 public abstract class Element {
 	private final String name;
@@ -35,6 +44,9 @@ public abstract class Element {
 		return nextElement;
 	}
 
+	/**
+	 * Indique à un élément quel est l'élément qui le succède
+	 */
 	public void setNextElement(Element nextElement) {
 		this.nextElement = nextElement;
 	}
@@ -43,6 +55,9 @@ public abstract class Element {
 		return previousElement;
 	}
 
+	/**
+	 * Indique à un élément quel est l'élément le précédant
+	 */
 	public void setPreviousElement(Element previousElement) {
 		this.previousElement = previousElement;
 	}

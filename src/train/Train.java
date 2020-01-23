@@ -12,23 +12,27 @@ package train;
  * @author Mayte segarra <mt.segarra@imt-atlantique.fr> Test if the first
  *         element of a train is a station
  * @author Philippe Tanguy <philippe.tanguy@imt-atlantique.fr>
+ * @author Mathieu CAROFF <mathieu.caroff@imt-atlantique.net>
+ * @author Sébastien NAL <sebastien.nal@imt-atlantique.net>
  * @version 0.3
  */
 public class Train implements Runnable {
 	private final String name;
 	private Position pos;
+	private final int step_limit;
 
-	public Train(String name, Position pos) throws BadPositionForTrainException {
+	public Train(String name, Position pos, int step_limit) throws BadPositionForTrainException {
 		if (name == null || pos == null)
 			throw new NullPointerException();
 
 		// A train should be first be in a station
-		if (!(pos.getElem() instanceof Station))
+		if (!(pos.getElem().isStation()))
 			throw new BadPositionForTrainException(name);
 
 		this.name = name;
 		this.pos = pos;
 		this.pos.getElem().enter();
+		this.step_limit = step_limit;
 	}
 
 	private void setPos(Position pos) {
@@ -46,11 +50,21 @@ public class Train implements Runnable {
 	}
 
 	/**
-	 * Try to move to the next position
+	 * Tente de déplacer le train vers sa prochaine position
 	 * 
-	 * @return true iff the train did move
+	 * @return true ssi le train s'est déplacé
 	 */
 	public synchronized boolean move() {
+		/**
+		 * La stratégie de déplacement du train est de déterminer les verrous
+		 * nécessaires, de les acquérir dans l'ordre, et de tenter d'efféctuer le
+		 * déplacement.
+		 * 
+		 * Si le déplacement n'est pas possible en raison de la direction de l'arc, ou
+		 * bien en raison d'un manque de place sur les rails ou dans une gare, la
+		 * procédure est interrompu au plus tôt et la valeur fonction renvoie `false`
+		 * pour indiquer l'échec du déplacement.
+		 */
 		Position currentPos = getPos();
 		Position nextPos = this.computeNextPosition();
 
@@ -82,6 +96,9 @@ public class Train implements Runnable {
 			}
 			synchronized (arc) {
 				if (arc.validateDirection(myDirection)) {
+					/**
+					 * /!\ the below lock, on stationElement does not respect the lock order
+					 */
 					synchronized (stationElement) {
 						if (stationElement.hasRoom()) {
 							boolean success = changePosition(currentPos, nextPos, reachingStation);
@@ -104,6 +121,10 @@ public class Train implements Runnable {
 		}
 	}
 
+	/**
+	 * Calcul la prochaine position que le train occupera en fonction de sa position
+	 * courante.
+	 */
 	private Position computeNextPosition() {
 		Element currentElement = getPos().getElem();
 		Direction direction = getPos().getDirection();
@@ -116,6 +137,15 @@ public class Train implements Runnable {
 		}
 	}
 
+	/**
+	 * Déplace le train d'une position donné à une autre position. Cette méthode est
+	 * appelée par `move()`.
+	 * 
+	 * @param currentPos
+	 * @param nextPos
+	 * @param reachingStation
+	 * @return
+	 */
 	private boolean changePosition(Position currentPos, Position nextPos, boolean reachingStation) {
 		Position posA = currentPos;
 		Position posB = nextPos;
@@ -125,6 +155,12 @@ public class Train implements Runnable {
 		}
 		// placer les verrous
 		synchronized (posA.getElem()) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			synchronized (posB.getElem()) {
 				if (reachingStation || nextPos.getElem().hasRoom()) {
 					currentPos.getElem().leave();
@@ -150,10 +186,11 @@ public class Train implements Runnable {
 
 	@Override
 	public void run() {
-		for (int i = 0; i < 3000; i++) {
+		for (int i = 0; i < this.step_limit; i++) {
 			this.move();
+
 			try {
-				Thread.sleep(1);
+				Thread.sleep(0, 10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

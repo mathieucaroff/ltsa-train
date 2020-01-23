@@ -1,5 +1,11 @@
 package train;
 
+/**
+ * Un arc est un ensemble ordonné de sections entre deux gares.
+ * 
+ * @author Mathieu CAROFF <mathieu.caroff@imt-atlantique.net>
+ * @author Sébastien NAL <sebastien.nal@imt-atlantique.net>
+ */
 public class Arc {
 
 	private final String name;
@@ -64,6 +70,12 @@ public class Arc {
 		return this.name;
 	}
 
+	/**
+	 * Étant donné une section d'une extrémité de l'arc, renvoie la section
+	 * correspondant à l'autre extrémité.
+	 * 
+	 * (il peut s'agire de la même section si l'arc n'a qu'une section.)
+	 */
 	public Section getOtherStation(Element elem) {
 		if (elem == this.sectionArray[0]) {
 			return this.sectionArray[this.sectionArray.length - 1];
