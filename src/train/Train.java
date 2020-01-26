@@ -25,7 +25,7 @@ public class Train implements Runnable {
 		if (name == null || pos == null)
 			throw new NullPointerException();
 
-		// A train should be first be in a station
+		// A train should first be in a station
 		if (!(pos.getElem().isStation()))
 			throw new BadPositionForTrainException(name);
 
@@ -52,17 +52,17 @@ public class Train implements Runnable {
 	/**
 	 * Tente de déplacer le train vers sa prochaine position
 	 * 
-	 * @return true ssi le train s'est déplacé
+	 * @return true si le train s'est déplacé
 	 */
 	public synchronized boolean move() {
 		/**
 		 * La stratégie de déplacement du train est de déterminer les verrous
-		 * nécessaires, de les acquérir dans l'ordre, et de tenter d'efféctuer le
+		 * nécessaires, de les acquérir dans l'ordre, et de tenter d'effectuer le
 		 * déplacement.
 		 * 
 		 * Si le déplacement n'est pas possible en raison de la direction de l'arc, ou
 		 * bien en raison d'un manque de place sur les rails ou dans une gare, la
-		 * procédure est interrompu au plus tôt et la valeur fonction renvoie `false`
+		 * procédure est interrompue au plus tôt et la valeur fonction renvoie `false`
 		 * pour indiquer l'échec du déplacement.
 		 */
 		Position currentPos = getPos();
@@ -137,7 +137,7 @@ public class Train implements Runnable {
 	}
 
 	/**
-	 * Calcul la prochaine position que le train occupera en fonction de sa position
+	 * Calcule la prochaine position que le train occupera en fonction de sa position
 	 * courante.
 	 */
 	private Position computeNextPosition() {
@@ -153,13 +153,13 @@ public class Train implements Runnable {
 	}
 
 	/**
-	 * Déplace le train d'une position donné à une autre position. Cette méthode est
+	 * Déplace le train d'une position donnée à une autre position. Cette méthode est
 	 * appelée par `move()`.
 	 * 
 	 * @param currentPos
 	 * @param nextPos
 	 * @param reachingStation
-	 * @return
+	 * @return `true` si le changement de position a réussi, `false` sinon
 	 */
 	private boolean changePosition(Position currentPos, Position nextPos, boolean reachingStation) {
 		Position posA = currentPos;
@@ -173,7 +173,6 @@ public class Train implements Runnable {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			synchronized (posB.getElem()) {
@@ -207,7 +206,6 @@ public class Train implements Runnable {
 			try {
 				Thread.sleep(0, 10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

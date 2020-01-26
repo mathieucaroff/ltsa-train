@@ -4,7 +4,7 @@ package train;
  * Représentation de la direction que peut prendre un train : de gauche à droite
  * ou de droite à gauche.
  *
- * Note: - la direction LR est le sens naturel, le sens à l'allé ("next") - la
+ * Note: - la direction LR est le sens naturel, le sens à l'aller ("next") - la
  * direction RL est le sens au retour ("previous")
  *
  * @author Fabien Dagnat <fabien.dagnat@imt-atlantique.fr>

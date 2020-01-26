@@ -14,11 +14,11 @@ import java.util.Optional;
  * {@link Section}</li>
  * </ol>
  *
- * Les éléments ont la résponsabilité de connaître et de pouvoir désigner
+ * Les éléments ont la responsabilité de connaître et de pouvoir désigner
  * les éléments adjacents. Il est prévu que les fins de lignes se désignent
  * elles-même comme élément adjacent.
  *
- * Les éléments ont la résponsabilité de connaître le nombre de train les
+ * Les éléments ont la responsabilité de connaître le nombre de trains les
  * occupant (count), ainsi que leur capacité maximale (size).
  * 
  * @author Fabien Dagnat <fabien.dagnat@imt-atlantique.fr>
@@ -45,7 +45,7 @@ public abstract class Element {
 	}
 
 	/**
-	 * Indique à un élément quel est l'élément qui le succède
+	 * Indique à un élément quel est l'élément qui lui succède
 	 */
 	public void setNextElement(Element nextElement) {
 		this.nextElement = nextElement;
@@ -83,7 +83,6 @@ public abstract class Element {
 			try {
 				wait();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

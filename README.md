@@ -10,7 +10,7 @@ IMT Atlantique.
   - [Compilation et exécution](#compilation-et-ex%c3%a9cution)
   - [Git](#git)
   - [Exercices](#exercices)
-  - [Ordre des vérrous](#ordre-des-v%c3%a9rrous)
+  - [Ordre des verrous](#ordre-des-verrous)
   - [Exercice 1 - Le comportement d'un train](#exercice-1---le-comportement-dun-train)
     - [Q1.1](#q11)
     - [Q1.2](#q12)
@@ -53,14 +53,14 @@ Le projet est public sur Github: https://github.com/mathieucaroff/ltsa-train
 dernier commit d'un tag. Les commentaires ont été ajouté après la résolution
 du dernier exercice.
 
-## Ordre des vérrous
+## Ordre des verrous
 
-Afin d'éviter des situations d'interblocages résultant de la prises multiple de
-vérrous, ce programme suit de manière consistante l'ordre de prise suivant:
+Afin d'éviter des situations d'interblocages résultant de la prise multiple de
+verrous, ce programme suit de manière consistante l'ordre de prise suivant:
 
-- 1. Les vérrous sur les arcs
-- 2. Les vérrous sur les éléments
-- S'il est nécessaire de prendre les vérrous sur deux éléments distincts,
+- 1. Les verrous sur les arcs
+- 2. Les verrous sur les éléments
+- S'il est nécessaire de prendre les verrous sur deux éléments distincts,
   commencer par celui de plus petit indice (le plus "à gauche").
 
 La méthode `move()` de Train contient une exception à la règle d'ordre de prise
@@ -77,13 +77,13 @@ Le déplacement d'un train correspond à l'occupation de différentes positions
 au cours du temps. Il s'agira donc de construire une nouvelle position à
 chaque fois qu'un train se déplace.
 
-On choisi de retirer le mot clé final du champs `Position pos` de la
-classe train. On choisi donc que chaque train soit responsable de tenir
+On choisit de retirer le mot clé final du champs `Position pos` de la
+classe train. On choisit donc que chaque train soit responsable de tenir
 à jour sa position.
 
 Les classes `Station`, `Section`, `Element` et `Railway` n'ont donc aucune
-responsabilité dans le déplacement des trains, que les éléments de ligne soit
-utilisés dans des positions.
+responsabilité dans le déplacement des trains, bien que les éléments de ligne 
+soient utilisés dans des positions.
 
 ### Q1.2
 
@@ -93,7 +93,7 @@ On ajoute une méthode `getNextPosition()` à Railway. Cette méthode accepte un
 position et donne la prochain position à occuper.
 
 On ajoute un attribut `railway` à Train qui réfère au rail sur lequel le train
-se trouve. Cette attribut est passé dans le constructeur.
+se trouve. Cet attribut est passé dans le constructeur.
 
 On ajoute une méthode `isStation` à la classe abstraite `Element`. Cette
 méthode renvoie le booléen `true` pour `Station` et `false` pour
@@ -144,7 +144,7 @@ Train[2] is on AB going from right to left
 ### Q2.2
 
 On rajoute une nouvelle variable `count` dans `Element` qui permet de savoir combien de
-trains sont présent dans l'élément. On généralise `size` à `Element`, une section ayant
+trains sont présents dans l'élément. On généralise `size` à `Element`, une section ayant
 une taille de 1.
 Les variables utilisées pour exprimer l'invariant de sûreté sont : `count` et `size` dans `Element`.
 
@@ -192,7 +192,7 @@ Il est donc nécessaire d'améliorer l'invariant de sûreté.
 
 On ajoute une variable `direction` à Railway qui indique la direction
 d'utilisation du rail entres les gares. Cette variable vaut `null` lorsque
-qu'aucun train ne parcours le rail.
+qu'aucun train ne parcourt le rail.
 On ajoute une variable `count` à Railway qui indique le nombre de trains
 hors d'une gare.
 
@@ -202,7 +202,7 @@ La variable permettant d'exprimer la condition est `direction` dans `Railway`.
 
 La condition de sûreté est :
 
-Pour tout les trains présents sur le rail, la direction du train doit être
+Pour tous les trains présents sur le rail, la direction du train doit être
 égale à celle du rail.
 
 Formellement la condition est :

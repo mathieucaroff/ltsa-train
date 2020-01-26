@@ -6,7 +6,7 @@ import java.util.Optional;
  * Représentation d'une section de voie ferrée. C'est une sous-classe de la
  * classe {@link Element}.
  *
- * `Section` ont la résponsabilité de connaître l'arc dont elles font partie,
+ * `Section` a la responsabilité de connaître l'arc dont elle fait partie,
  * et de l'indiquer à qui le souhaite.
  *
  * @author Fabien Dagnat <fabien.dagnat@imt-atlantique.fr>

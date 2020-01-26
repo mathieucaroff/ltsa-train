@@ -74,7 +74,7 @@ public class Arc {
 	 * Étant donné une section d'une extrémité de l'arc, renvoie la section
 	 * correspondant à l'autre extrémité.
 	 * 
-	 * (il peut s'agire de la même section si l'arc n'a qu'une section.)
+	 * (il peut s'agir de la même section si l'arc n'a qu'une section.)
 	 */
 	public Section getOtherStation(Element elem) {
 		if (elem == this.sectionArray[0]) {
